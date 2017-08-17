@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+#first-tabs{
+	display: block;
+}
+
+#second-tabs{
+	display: none;
+}
+
+#saleList{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	vertical-align: middle;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.input-append{
+	display: inline;
+}

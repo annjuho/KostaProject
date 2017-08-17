@@ -1,0 +1,90 @@
+@CHARSET "UTF-8";
+.add {
+	width: 50%;
+	height: 500px;
+	border: 2px;
+	left: 28%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;
+	box-shadow: 1px 1px 100px darkgray;
+}
+.item_div{
+	width: 60%;
+	height: 500px;
+	border: 2px;
+	left: 28%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;x	
+	box-shadow: 1px 1px 100px darkgray;
+}
+.customer_div{
+	width: 60%;
+	height: 500px;
+	border: 2px;
+	left: 28%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;
+	box-shadow: 1px 1px 100px darkgray;
+}
+.hide_detail{
+	display : none;
+}
+.title {
+	background-color: darkgray;
+	padding: 1%;
+	text-align: center;
+	font-size: 1.1em;
+}
+tr {
+	border: 1px;
+	border-color: black;
+	border-style: solid;
+}
+th {
+	border: 1px;
+	border-right: black;
+	border-style: solid;
+}
+.new {
+ 	position: relative;
+}
+
+.form1{
+	width: 90%;
+	margin-left: 3%;
+	margin-top: 3%;
+	text-align: center;
+}
+.btnn{
+	height:30px;
+	width: 90px;
+}
+.buttongroup{
+	text-align: left;
+	float: left;
+}
+#excelForm{
+	text-align: right;
+}
+#excelFile{
+	float: right;
+}
+.box-footer{
+	text-align: center;
+	margin-left: 230px;
+}

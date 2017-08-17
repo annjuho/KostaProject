@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="erp.common.mapper.CommonMapper">
+	<cache />
+
+	<sql id="search">
+		<if test="searchType != null">
+			AND (title like '%'|| #{keyword}||'%' or contents like
+			'%'||
+			#{keyword}||'%')
+		</if>
+	</sql>
+
+	<select id="getMessageList" resultType="MessageViewVO"
+		parameterType="MessageCriteria">
+		<![CDATA[
+			select * from message_view where receive_id=#{emp_id}
+		]]>
+		<include refid="search"></include>
+		<![CDATA[ 
+			order by message_id  
+		]]>	 	
+	</select>
+
+	<select id="messageListCount" resultType="int" parameterType="MessageCriteria">
+	  <![CDATA[
+	  	select count(*) from message_view where receive_id=#{emp_id}
+	  ]]>
+	  <include refid="search"></include>
+	  <![CDATA[ 
+		order by message_id  
+	  ]]>	
+	</select>
+	
+	<delete id="msgDel" parameterType="String">
+		delete from message where
+		message_id=#{string}
+	</delete>
+	
+	<select id="getEmpID" parameterType="String" resultType="EmployeeViewVO">
+		select * from emp_view where e_name=#{e_name}
+	</select>
+
+	<insert id="sendMessage" parameterType="MessageVO">
+		insert into message(message_id, send_id, receive_id, title, contents, receive_check)
+			values(message_seq.NEXTVAL, #{send_id}, 
+			#{receive_id}, #{title}, #{contents}, #{receive_check})
+	</insert>
+	
+	<select id="getMessage" parameterType="int" resultType="MessageViewVO">
+		select * from message_view where message_id = #{message_id}
+	</select>
+	
+	<select id="NotReadCnt" resultType="int" parameterType="String">
+		select count(*) from message where receive_id=#{emp_id} and receive_check='N'
+	</select>
+	
+	<update id="updateState" parameterType="int">
+		update message set receive_check='Y' where message_id=#{message_id}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

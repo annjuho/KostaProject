@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springERP.purchase.mapper.purchaseMapper">
+ 	<insert id="insertPurchase" parameterType="PurchaseVO">
+		insert into buy(
+			buy_id,	customer_id, product_id, buy_date, warehouse_id, pay_type,
+			buy_price,	buy_amount, emp_id
+		)values(
+			#{buy_id},	#{customer_id}, #{product_id}, SYSDATE, #{warehouse_id},
+			#{pay_type}, #{buy_price}, #{buy_amount}, #{emp_id}
+		)
+	</insert>
+	<insert id="insertExcel">
+		insert into buy(
+			buy_id,	customer_id, product_id, buy_date, warehouse_id, pay_type,
+			buy_price,	buy_amount, emp_id
+		)values(
+			#{buy_id},	#{customer_id}, #{product_id}, #{buy_date}, #{warehouse_id},
+			#{pay_type}, #{buy_price}, #{buy_amount}, #{emp_id}
+		)
+	</insert>
+	<select id="purchaseList" resultType="PurchaseListView">
+		select p.buy_id, c.customer_name, pro.product_name, p.buy_date,
+			w.warehouse_name, p.pay_type, p.buy_price, p.buy_amount
+			from buy p, customer c, product pro, warehouse w
+			where p.customer_id = c.customer_id and
+				p.product_id = pro.product_id and
+				p.warehouse_id = w.warehouse_id	
+	</select>
+	<delete id="deletePurchase">
+		delete from buy where buy_id = #{buy_id}
+	</delete>
+	<update id="updatePurchase">
+		update buy set pay_type = #{pay_type}, buy_price = #{buy_price}, buy_amount = #{buy_amount}
+			where buy_id = #{buy_id}
+	</update>
+	<select id="customerList" resultType="GetCustomer" parameterType="String">
+		select * from customer
+			where customer_id LIKE #{value}
+	</select>
+	
+	<select id="productList" resultType="Product">
+		select * from product
+			where product_id LIKE #{value}
+	</select>
+	<select id="warehouseList" resultType="GetWareHouse">
+		select * from warehouse
+			where warehouse_id LIKE #{value}
+	</select>
+	<update id="stockUpdate">
+		update stock set stock_amount = stock_amount + #{buy_amount}, warehouse_id = #{warehouse_id}
+			where product_id = #{product_id}
+	</update>
+	<!-- <select id="searchPurchase" resultType="PurchaseVO">
+		select b.buy_id, p.product_name, c.customer_name 
+			from buy b, product p, customer c
+			where b.product_id = p.product_id and
+				b.customer_id = c.customer_id
+	</select> -->
+	<select id="searchPurchaseList" resultType="PurchaseListView">
+	
+		select p.buy_id, c.customer_name, pro.product_name, p.buy_date,
+			w.warehouse_name, p.pay_type, p.buy_price, p.buy_amount
+			from buy p, customer c, product pro, warehouse w
+			where p.customer_id = c.customer_id 
+				and p.product_id = pro.product_id
+				and p.warehouse_id = w.warehouse_id
+				<if test="start_date != '' and start_date != null">					
+					and p.buy_date BETWEEN #{start_date} AND #{end_date}
+				</if>
+				<if test="customer_id != '' and customer_id != null">
+					and p.customer_id = #{customer_id}
+				</if>
+				<if test="product_id != '' and product_id != null">
+					and p.product_id = #{product_id}
+				</if>
+				<if test="warehouse_id != '' and warehouse_id != null">
+					and p.warehouse_id = #{warehouse_id}
+				</if>	
+	</select>
+	<!--
+	<update id="updateStockAmount" parameterType="Purchase">
+		update stock set stock_amount = stock_amount + #{buy_amount}
+			where product_id = #{product_id}
+	</update>
+	 -->
+	  <select id="listAll" resultType="PurchaseListView">
+    <![CDATA[
+    select 
+      buy_id,customer_id, product_id, buy_davte, warehouse_id, pay_type,
+			buy_price,	buy_amount, emp_id
+    from 
+      buy
+    order by buy_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="PurchaseListView">
+    <![CDATA[
+    select 
+      buy_id,customer_id, product_id, buy_date, warehouse_id, pay_type,
+			buy_price,	buy_amount, emp_id
+    from 
+      buy
+    order by buy_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="PurchaseListView">
+    <![CDATA[
+     select p.buy_id, c.customer_name, pro.product_name, p.buy_date,
+			w.warehouse_name, p.pay_type, p.buy_price, p.buy_amount
+			from buy p, customer c, product pro, warehouse w
+			where p.customer_id = c.customer_id and
+				p.product_id = pro.product_id and
+				p.warehouse_id = w.warehouse_id
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(buy_id) 
+    from 
+      buy 
+ 
+    ]]>
+    </select>
+    <select id="getCustomerId" resultType="String">
+    	select customer_id from customer where customer_name=#{value}
+    </select>
+    <select id="getProductId" resultType="String">
+    	select product_id from product where product_name=#{value}
+    </select>
+    <select id="getWarehouseId" resultType="String">
+    	select warehouse_id from warehouse where warehouse_name=#{value}
+    </select>
+    <!-- <select id="listSearch" resultType="PurchaseListView" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from buy  
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by buy_id desc     
+	   ]]>  
+	   
+   </select>
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(buy_id) 
+     from buy 
+     where buy_id > 0 
+   ]]>
+     <include refid="search"></include>
+   </select>  -->
+   
+   <select id="getTotalPrice" resultType="PurchaseListView">
+   		select c.customer_name, b.buy_price, b.buy_amount from buy b, customer c
+   			where b.customer_id = c.customer_id
+			order by buy_price desc
+   </select>
+   <select id="getCustomerGroup" resultType="PurchaseListView">
+   		select c.customer_name from buy b, customer c			
+   			where b.customer_id = c.customer_id
+			group by c.customer_name
+   </select>
+   <select id="getTotalSales" resultType="Slip">
+   		select *from slip
+   			order by slip_id
+   </select>
+   <select id="getMonth" resultType="Slip">
+   		select * from slip 
+			where slip_date LIKE #{value}
+   </select>
+</mapper>

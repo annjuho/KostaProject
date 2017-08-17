@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.acc.mapper.BasicAccountMapper">
+
+	<!-- 계좌 CRUD START -->
+	<insert id="accountInsert" parameterType="Accounts">
+		insert into Accounts (
+		account_id, ACCOUNT_NUMBER, ACCOUNT_NAME, DIAGNOSIS_NUMBER,
+		ACCOUNT_DETAIL,
+		REMARKS, USE
+		) values(
+		account_seq.NEXTVAL,
+		#{account_number},
+		#{account_name},
+		#{diagnosis_number},
+		#{account_detail},
+		#{remarks},
+		#{use}
+		)
+	</insert>
+
+	<select id="accountList" resultType="Accounts">
+		SELECT * FROM accounts
+	</select>
+	
+	<select id="accountListId" resultType="Accounts">
+		SELECT *FROM accounts where account_id = #{account_id}
+	</select>
+
+	<update id="accountUpdate">
+		UPDATE accounts SET account_number =
+		#{account_number}, account_name =
+		#{account_name},
+		diagnosis_number =
+		#{diagnosis_number}, account_detail = #{account_detail}, REMARKS =
+		#{remarks}, USE = #{use}
+		WHERE account_number = #{account_number}
+	</update>
+
+
+	<delete id="accountDelete">
+		DELETE FROM Accounts
+		WHERE account_number = #{account_number}
+	</delete>
+	<!-- 계좌 CRUD END -->
+
+	<!-- 계좌 페이징 START -->
+	<select id="listAll" resultType="Accounts">
+    <![CDATA[
+    SELECT 
+     account_id,ACCOUNT_NUMBER, ACCOUNT_NAME, DIAGNOSIS_NUMBER,
+		ACCOUNT_DETAIL,	REMARKS, USE
+    from 
+      accounts 
+    where account_id
+    ]]>
+	</select>
+
+	<select id="listPage" resultType="Accounts">
+    <![CDATA[
+    SELECT 
+       account_id ,ACCOUNT_NUMBER, ACCOUNT_NAME, DIAGNOSIS_NUMBER,
+		ACCOUNT_DETAIL,	REMARKS, USE
+    from 
+      accounts 
+    where account_id
+    ]]>
+	</select>
+
+	<select id="listCriteria" resultType="Accounts">
+    <![CDATA[
+     SELECT 
+      account_id,ACCOUNT_NUMBER, ACCOUNT_NAME, DIAGNOSIS_NUMBER,
+		ACCOUNT_DETAIL,	REMARKS, USE
+    from 
+      accounts 
+    where account_id
+    ]]>
+	</select>
+
+	<select id="countPaging" resultType="int">
+    <![CDATA[
+    SELECT 
+      count(account_id) 
+    from 
+      accounts 
+    where 
+      account_id 
+    ]]>
+	</select>
+
+	<!-- <select id="listSearch" resultType="ProjectsVO" parameterType="SearchCriteria">
+      <![CDATA[  
+	     SELECT * 
+	     from accounts 
+	     where account_number   
+	   ]]>
+
+		<include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by account_number desc     
+	  ]]>
+	</select>
+
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and title like '%'|| #{keyword}||'%'
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and content like '%'|| #{keyword}||'%'
+			</if>
+			<if test="searchType == 'w'.toString()">
+				and writer like '%'|| #{keyword}||'%'
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				and ( title like '%'|| #{keyword}||'%' OR content like
+				'%'||
+				#{keyword}||'%')
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				and ( content like '%'|| #{keyword}||'%' OR writer like
+				'%'||
+				#{keyword}||'%')
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				and ( title like '%'|| #{keyword}||'%'
+				OR
+				content like
+				'%'|| #{keyword}||'%'
+				OR
+				writer like '%'|| #{keyword}||'%')
+			</if>
+		</if>
+	</sql>
+
+	<select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     SELECT count(account_number) 
+     from accounts 
+     where account_number 
+   ]]>
+		<include refid="search"></include>
+	</select> -->
+	<!-- 계좌 페이징 END -->
+
+
+
+
+	<!-- 신용카드 CRUD START -->
+	<insert id="cardInsert" parameterType="Card">
+		insert into cards (
+		card_id, card_number, card_name, account_id, type, emp_id, diagnosis_number, use,
+		remarks
+		) values(
+		card_seq.NEXTVAL, #{card_number}, #{card_name}, #{account_id},
+		#{type}, #{emp_id}, #{diagnosis_number}, #{use}, #{remarks}
+		)
+	</insert>
+
+	<select id="cardList" resultType="Card">
+		SELECT * FROM cards
+	</select>
+
+	<update id="cardUpdate">
+		UPDATE cards SET card_number = #{card_number},
+		card_name = #{card_name}, account_id = #{account_id},
+		type =
+		#{type}, emp_id = #{emp_id}, diagnosis_number = #{diagnosis_number}, use = #{use},
+		remarks = #{remarks}
+		WHERE card_number = #{card_number}
+	</update>
+
+	<delete id="cardDelete">
+		DELETE FROM cards
+		WHERE card_number = #{card_number}
+	</delete>
+	<!-- 신용카드 CRUD END -->
+
+
+	<select id="projectList" resultType="ProjectsVO">
+		select  proj_id, proj_name, p.sums, a.account_number as account_number, p.remarks from projects p , accounts a where a.account_id = p.account_id
+	</select>
+ 
+	<!-- 프로젝트 RU START -->
+	<update id="projectUpdate">
+		UPDATE projects SET sums = #{sums}, account_id = #{account_id}, remarks = #{remarks}
+		WHERE proj_id = #{proj_id}
+	</update>	
+	
+	
+
+
+</mapper>

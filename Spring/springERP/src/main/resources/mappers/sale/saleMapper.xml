@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="springERP.sale.mapper.saleMapper">
+	<insert id="insertSale" parameterType="SaleVO">
+		insert into sell(
+			sell_id, customer_id, product_id, sell_date, warehouse_id, pay_type,sell_price, sell_amount, total_price
+		)		
+		values(
+			#{sell_id},#{customer_id},#{product_id},SYSDATE,#{warehouse_id},#{pay_type},#{sell_price},#{sell_amount}, #{sell_price}*#{sell_amount}
+		)
+	</insert>
+	<insert id="insertSaleExcel" parameterType="SaleVO">
+		insert into sell(
+			sell_id, customer_id, product_id, sell_date, warehouse_id, pay_type,sell_price, sell_amount
+		)		
+		values(
+			#{sell_id},#{customer_id},#{product_id},#{sell_date},#{warehouse_id},#{pay_type},#{sell_price},#{sell_amount}
+		)
+	</insert>
+	
+	<select id="saleList" resultType="SaleListView">
+		select s.sell_id, c.customer_name, p.product_name, s.sell_date, 
+			w.warehouse_name, s.pay_type, s.sell_price, s.sell_amount from sell s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+					order by s.sell_id
+	</select>
+	<delete id="deleteSale">
+		delete from sell
+			where sell_id = #{sell_id}
+	</delete>
+	<update id="updateSale">
+		update sell set pay_type = #{pay_type}, sell_price = #{sell_price}, sell_amount = #{sell_amount}
+			where sell_id = #{sell_id}
+	</update>
+	<select id="searchSaleList" resultType="SaleListView">
+		select s.sell_id, c.customer_name, p.product_name, s.sell_date, 
+			w.warehouse_name, s.pay_type, s.sell_price, s.sell_amount from sell s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+				<if test="start_date != '' and start_date != null">
+					and s.sell_date BETWEEN #{start_date} AND #{end_date}
+				</if>
+				<if test="customer_id != '' and customer_id != null">
+					and s.customer_id = #{customer_id}
+				</if>
+				<if test="product_id != '' and product_id != null">
+					and s.product_id = #{product_id}
+				</if>
+				<if test="warehouse_id != '' and warehouse_id != null">
+					and s.warehouse_id = #{warehouse_id}
+				</if>
+	</select>
+	
+	<select id="cBuyList" resultType="CompanyBuyList">
+		select s.cbuy_id, c.customer_name, p.product_name, s.cbuy_date, 
+			w.warehouse_name, s.pay_type, s.cbuy_priceout, s.cbuy_amount from company_buy s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+	</select>
+	<delete id="deleteCbuy">
+		delete from company_buy where cbuy_id = #{cbuy_id}
+	</delete>
+	<update id="updateCbuy">
+		update company_buy set pay_type = #{pay_type}, cbuy_priceout = #{cbuy_priceout}, cbuy_amount = #{cbuy_amount}
+			where cbuy_id = #{cbuy_id}
+	</update>
+	<insert id="insertCbuy">
+		insert into company_buy	(
+			cbuy_id, customer_id, product_id, cbuy_date, warehouse_id, pay_type, cbuy_priceout, cbuy_amount
+		)		
+		values(
+			#{cbuy_id},#{customer_id},#{product_id},SYSDATE,#{warehouse_id},#{pay_type},#{cbuy_priceout},#{cbuy_amount}
+		)		
+	</insert>
+	 <select id="listAll" resultType="SaleListView">
+    <![CDATA[
+    select 
+      sell_id, customer_id, product_id, sell_date, warehouse_id, pay_type,sell_price, sell_amount
+    from 
+      sell
+    order by sell_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="SaleListView">
+    <![CDATA[
+    select 
+      sell_id, customer_id, product_id, sell_date, warehouse_id, pay_type,sell_price, sell_amount
+    from 
+      sell
+    order by sell_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="SaleListView">
+    <![CDATA[
+     select s.sell_id, c.customer_name, p.product_name, s.sell_date, 
+			w.warehouse_name, s.pay_type, s.sell_price, s.sell_amount from sell s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(sell_id) 
+    from 
+      sell 
+ 
+    ]]>
+    </select>
+    <!-- <select id="listSearch" resultType="SaleListView" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from sell  
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by sell_id desc     
+	   ]]>  
+	   
+   </select>
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(sell_id) 
+     from sell
+   ]]>
+     <include refid="search"></include>
+   </select> -->
+   
+   <select id="saleProductChart" parameterType="String" resultType="SaleProductChart">
+	SELECT p.product_name, SUM(s.total_price) as total_price FROM sell s, product p
+		WHERE s.customer_id = #{value} and
+				s.product_id = p.product_id
+		GROUP BY p.product_name
+   </select>
+   
+   <select id="saleCustomerChart" resultType="SaleCustomerChart">
+	SELECT c.customer_name, SUM(s.total_price) as total FROM sell s, customer c
+		where s.customer_id = c.customer_id
+		GROUP BY c.customer_name
+   </select>
+   
+<!--    <select id="selectSaleXml" parameterType="String" resultType="SaleGoodsDataXml">
+   	SELECT pg.pgroup_name, p.product_name, s.product_id, p.price_out, s.sell_amount 
+		FROM product_group pg, product p, sell s
+		WHERE pg.pgroup_id = p.pgroup_id 
+		AND p.product_id = s.product_id
+		AND sell_id = #{sell_id}
+   </select> -->
+   
+   <insert id="xmlDataInsert" parameterType="SaleVO">
+   		insert into sell@link_xmldata(
+			sell_id, customer_id, product_id, sell_date, warehouse_id, pay_type,sell_price, sell_amount
+		)		
+		values(
+			#{sell_id},#{customer_id},#{product_id},SYSDATE,#{warehouse_id},#{pay_type},#{sell_price},#{sell_amount}
+		)
+   </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+

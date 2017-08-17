@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.acc.mapper.Statement">
+
+	<!-- 매출보고서 -->
+	<select id="StatementAllSalesList" resultType="Statements">
+		SELECT * FROM StatementSalesAllList		
+	</select>
+
+
+	<!-- 매입보고서 -->
+	<select id="StatementAllPurchaseList" resultType="Statements">
+		SELECT *FROM StatementPurchaseAllList 
+	</select>
+	
+	
+	<select id="StatementAllList" resultType="Statements">
+	
+	</select>
+</mapper>
+

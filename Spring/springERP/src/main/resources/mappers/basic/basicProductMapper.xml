@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.basic.mapper.basicProductMapper">
+
+	<select id="pgroupList" resultType="ProductGroup">
+		select * from product_group
+	</select>
+	
+	<select id="standardList" resultType="Standards">
+		select * from standards
+	</select>
+	
+	<select id="totalCountProduct" resultType="int">
+		select count(*) from product
+	</select>
+	
+	<select id="productList" parameterType="java.util.Map" resultType="ProductList">
+	
+		select * from (select rownum as num, p.product_id, p.product_name, g.pgroup_name, p.barcode, p.price_in, p.price_out, s.standard_name, p.made_in 
+			from product p, product_group g, standards s
+			where p.pgroup_id = g.pgroup_id and s.standard_id = p.standard_id)
+			where num between #{start} and #{end}
+	</select>
+	
+	<insert id="productInsert" parameterType="Product">
+		insert into Product (
+			product_id,
+			product_name,
+			pgroup_id,
+			price_in,
+			price_out,
+			barcode,
+			standard_id,
+			made_in
+		) values(
+			#{product_id},
+			#{product_name},
+			#{pgroup_id},
+			#{price_in},
+			#{price_out},
+			#{barcode},
+			#{standard_id},
+			#{made_in}
+		)
+	</insert>
+	
+	<update id="productUpdate" parameterType="Product">
+		update product set product_name = #{product_name}, pgroup_id = #{pgroup_id}, price_in = #{price_in},
+			price_out = #{price_out}, barcode = #{barcode}, standard_id = #{standard_id}, made_in = #{made_in}
+				where product_id = #{product_id}
+	</update>
+	
+	<delete id="productDelete" parameterType="String">
+		delete from product where product_id = #{product_id}
+	</delete>
+	
+	<select id="productCodeJson" parameterType="String" resultType="Product">
+		select product_id, product_name from product
+			where product_id LIKE #{word}
+	</select>
+	
+	<insert id="stockInsert" parameterType="Stock">
+		INSERT INTO stock(
+			product_id,
+			stock_amount,
+			warehouse_id,
+			stock_loc
+		) VALUES (
+			#{product_id},
+			#{stock_amount},
+			#{warehouse_id},
+			#{stock_loc}
+		)
+	</insert>
+	<insert id="insertCustomer">
+		insert into customer(
+			customer_id, customer_name, repre_name, phone_number, customer_address, copy_bankbook,
+			bankbook_check, customer_email, customer_fax, checkman
+		)
+		values(
+			#{customer_id}, #{customer_name}, #{repre_name}, #{phone_number},
+			#{customer_address}, #{copy_bankbook}, #{bankbook_check}, #{customer_email},
+			#{customer_fax}, #{checkman}
+		)
+	</insert>
+	<select id="customerList" resultType="Customer">
+		select * from customer
+			order by customer_name
+	</select>
+	<update id="customerUdapte">
+		update customer set 
+	</update>
+	<select id="getProduct" resultType="Product">
+		select * from product where product_id = #{value}
+	</select>
+</mapper>

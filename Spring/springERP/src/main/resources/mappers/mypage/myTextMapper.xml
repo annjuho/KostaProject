@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.mypage.mapper.myTextMapper">
+
+   <select id="enameGet" resultType="String" parameterType="String">
+	   	 select e_name from employee where emp_id=#{emp_id}
+   </select>
+
+   <select id="getDeptBoardList" resultType="DeptBoardVO" parameterType="MyDeptTextCriteria" >
+	     select * 
+	     from dept_board 
+	     where dept_board_id > 0
+	     and emp_id = #{emp_id}
+	     order by dept_board_id desc     
+   </select>
+
+   <select id="deptBoardCount" resultType="int" parameterType="String">
+    	 select count(dept_board_id) 
+     	 from dept_board 
+    	 where dept_board_id > 0
+    	 and emp_id=#{emp_id}
+   </select>
+
+   <select id="getMyProjList" resultType="ProjectsVO" parameterType="Criteria" >
+	     select * 
+	     from projects 
+	     where proj_id > 0
+	     and emp_id = #{emp_id}
+	     order by proj_id desc     
+   </select>
+
+   <select id="myProjCount" resultType="int" parameterType="String">
+    	 select count(proj_id) 
+     	 from projects 
+    	 where proj_id > 0
+    	 and emp_id=#{emp_id}
+   </select>
+
+   
+   
+</mapper>
+
+

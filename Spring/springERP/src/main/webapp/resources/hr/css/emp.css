@@ -1,0 +1,62 @@
+@CHARSET "UTF-8";
+
+.emp_info_body td, .indol_info_body td, .emp_info_head th, .indol_info_head th, .indol_request_th, .indol_request_body{
+	text-align: center;
+}
+
+.emp_info_body button{
+	margin: 0px;
+}
+.hr_body{
+	margin-right: 20px;
+}
+.modal_id{
+	height: 32px;
+}
+
+.title {
+    background-color: darkgray;
+    font-size: 1.1em;
+    padding: 1%;
+    text-align: center;
+}
+.basic_title{
+	font-weight: bold;
+}
+
+#search_form{
+	margin-bottom: 10px;
+	margin-right: 50px;
+}
+
+#emp_insert, #indol_update{
+	margin-top: 50px;
+}
+
+#basic_insert td, #basic_insert th, .add_basic th, .add_basic td{
+	text-align: center;
+}
+
+#basic_insert{
+	margin-top: 30px;
+}
+.add_basic{
+	width: 700px;
+	height: 400px;
+	border: 2px;
+	left: 15%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;
+	overflow: scroll;
+}
+
+body { font-family: 'Titillium Web', sans-serif; }
+
+.indol_request_th th, .indol_request_td td{
+	text-align: center;
+}

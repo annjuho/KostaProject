@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="springERP.sale.mapper.saleCompanyBuyMapper">
+	
+	<select id="cBuyList" resultType="CompanyBuyList">
+		select s.cbuy_id, c.customer_name, p.product_name, s.cbuy_date, 
+			w.warehouse_name, s.pay_type, s.cbuy_priceout, s.cbuy_amount from company_buy s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+	</select>
+	<delete id="deleteCbuy">
+		delete from company_buy where cbuy_id = #{cbuy_id}
+	</delete>
+	<update id="updateCbuy">
+		update company_buy set pay_type = #{pay_type}, cbuy_priceout = #{cbuy_priceout}, cbuy_amount = #{cbuy_amount}
+			where cbuy_id = #{cbuy_id}
+	</update>
+	<insert id="insertCbuy">
+		insert into company_buy	(
+			cbuy_id, customer_id, product_id, cbuy_date, warehouse_id, pay_type, cbuy_priceout, cbuy_amount
+		)		
+		values(
+			#{cbuy_id},#{customer_id},#{product_id},SYSDATE,#{warehouse_id},#{pay_type},#{cbuy_priceout},#{cbuy_amount}
+		)		
+	</insert>
+	 <select id="listAll" resultType="CompanyBuyList">
+    <![CDATA[
+    select 
+      cbuy_id, customer_id, product_id, cbuy_date, warehouse_id, pay_type,cbuy_priceout, cbuy_amount
+    from 
+      company_buy
+    order by cbuy_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="CompanyBuyList">
+    <![CDATA[
+   select 
+      cbuy_id, customer_id, product_id, cbuy_date, warehouse_id, pay_type,cbuy_priceout, cbuy_amount
+    from 
+      company_buy
+    order by cbuy_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="CompanyBuyList">
+    <![CDATA[
+     select s.cbuy_id, c.customer_name, p.product_name, s.cbuy_date, 
+			w.warehouse_name, s.pay_type, s.cbuy_priceout, s.cbuy_amount from company_buy s, customer c, product p, warehouse w
+				where s.customer_id = c.customer_id and
+					s.product_id = p.product_id and
+					s.warehouse_id = w.warehouse_id
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(cbuy_id) 
+    from 
+      company_buy 
+ 
+    ]]>
+    </select>
+    <select id="listSearch" resultType="CompanyBuyList" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from company_buy  
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by cbuy_id desc     
+	   ]]>  
+	   
+   </select>
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(cbuy_id) 
+     from company_buy
+   ]]>
+     <include refid="search"></include>
+   </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+

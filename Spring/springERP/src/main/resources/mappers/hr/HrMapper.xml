@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="erp.hr.mapper.HrMapper">
+	<cache />
+<!-- 기초등록  -->
+	<select id="deptChecker" parameterType="String" resultType="Int">
+		select count(*) from department where dept_id = #{b_id}
+	</select>
+	
+	
+	<select id="positionChecker" parameterType="String" resultType="Int">
+		select count(*) from positions where position_id = #{b_id}
+	</select>
+	<select id="jobChecker" parameterType="String" resultType="Int">
+		select count(*) from jobs where job_id = #{b_id}
+	</select>
+	<select id="dutyChecker" parameterType="String" resultType="Int">
+		select count(*) from duty where duty_id = #{b_id}
+	</select>
+	
+	
+	<insert id="deptInsert" parameterType="HrBasicVo">
+		insert into department
+		(dept_id, dept_name)
+		values(#{basic_id}, #{basic_name})
+	</insert>
+	<insert id="positionInsert" parameterType="HrBasicVo">
+		insert into positions
+		(position_id, position_name)
+		values(#{basic_id}, #{basic_name})
+	</insert>
+	<insert id="jobInsert" parameterType="HrBasicVo">
+		insert into jobs (job_id,
+		job_name)
+		values(#{basic_id}, #{basic_name})
+	</insert>
+	<insert id="dutyInsert" parameterType="HrBasicVo">
+		insert into duty (duty_id,
+		duty_name)
+		values(#{basic_id}, #{basic_name})
+	</insert>
+	
+	
+	<update id="updateDept" parameterType="HrBasicVo">
+		update department set
+		dept_name=#{basic_name} where dept_id=#{basic_id}
+	</update>
+	<update id="updatePosition" parameterType="HrBasicVo">
+		update positions set
+		position_name=#{basic_name} where position_id=#{basic_id}
+	</update>
+	<update id="updateJob" parameterType="HrBasicVo">
+		update jobs set
+		job_name=#{basic_name} where job_id=#{basic_id}
+	</update>
+	<update id="updateDuty" parameterType="HrBasicVo">
+		update duty set
+		duty_name=#{basic_name} where duty_id=#{basic_id}
+	</update>
+	
+	<select id="deptList" resultType="HrDeptVO">
+		select * from department order by dept_id
+	</select>
+	
+	<select id="positionList" resultType="HrPositionVO">
+		select * from positions order by position_id
+	</select>
+	
+	<select id="jobList" resultType="HrJobVO">
+		select * from jobs order by job_id
+	</select>
+	
+	<select id="dutyList" resultType="HrDutyVO">
+		select * from duty order by duty_id
+	</select>
+	
+	<delete id="delDept" parameterType="String">
+		delete from department where
+		dept_id=#{b_id}
+	</delete>
+	<delete id="delPosition" parameterType="String">
+		delete from positions
+		where position_id=#{b_id}
+	</delete>
+	<delete id="delJob" parameterType="String">
+		delete from jobs where
+		job_id=#{b_id}
+	</delete>
+	<delete id="delDuty" parameterType="String">
+		delete from duty where
+		duty_id=#{b_id}
+	</delete>
+	
+	<select id="empChecker" parameterType="String" resultType="Int">
+		select count(*) from employee where emp_id = #{b_id}
+	</select>
+	
+	<insert id="insertEmp" parameterType="EmployeeVO">
+		insert into employee (
+		emp_id, e_name, e_age, e_hiredate, e_profile_pic, e_sal, e_address, e_email, phone_number,
+		dept_id,
+		position_id, job_id, duty_id, e_pwd)
+		values(
+		#{emp_id}, #{e_name}, #{e_age}, #{e_hiredate}, #{e_profile_pic}, #{e_sal}, #{e_address}, #{e_email},
+		#{phone_number},
+		#{dept_id}, #{position_id}, #{job_id}, #{duty_id}, #{e_pwd})
+	</insert>
+
+ 	<sql id="search">
+	 <if test="searchType != null" >
+	     where e_name like '%'|| #{keyword}||'%'
+	 </if> 
+	</sql>
+
+	<select id="empListSearch" resultType="EmployeeViewVO" parameterType="SearchCriteriaHR">
+	<![CDATA[ 
+		select *
+		from emp_view
+	]]>
+	<include refid="search"></include>
+	<![CDATA[    
+	  order by emp_id	  
+	]]>
+	</select>
+
+<select id="empListSearchCount" resultType="int" parameterType="SearchCriteriaHR">
+<![CDATA[  
+	  select count(*) 
+	  from emp_view  
+	]]>
+	<include refid="search"></include>
+</select>
+
+	<select id="getIndolInfoLIst" resultType="IndolInfoViewVO" parameterType="SearchCriteriaHR">
+		<![CDATA[ 
+			select * from indol_view
+		]]>
+		<include refid="search"></include>
+		<![CDATA[    
+	 		 order by emp_id	  
+		]]>
+	</select>
+
+<select id="indolInfoCount" resultType="int" parameterType="SearchCriteriaHR">
+<![CDATA[  
+	  select count(*) 
+	  from indol_view  
+	]]>
+	<include refid="search"></include>
+</select>
+
+	<delete id="empDelete" parameterType="String">
+		delete from employee where
+		emp_id=#{string}
+	</delete>
+	<!-- e_profile_pic=#{e_profile_pic} -->
+	<update id="updateEmp" parameterType="EmployeeVO">
+		update employee set
+		e_name=#{e_name}, e_age=#{e_age}, e_sal=#{e_sal},
+		e_address=#{e_address}, e_email=#{e_email},
+		phone_number=#{phone_number}, e_hiredate=#{e_hiredate},
+		dept_id=#{dept_id}, position_id=#{position_id}, job_id=#{job_id},
+		duty_id=#{duty_id}, e_pwd=#{e_pwd}, e_profile_pic=#{e_profile_pic} where emp_id=#{emp_id}
+	</update>
+	
+	<select id="getEmp" parameterType="String" resultType="EmployeeVO">
+		select *
+		from employee where emp_id = #{emp_id}
+	</select>
+	
+	<delete id="indol_info_del" parameterType="String">
+		delete from indolence_info where
+		emp_id=#{string}
+	</delete>
+	
+	<delete id="indol_date_del" parameterType="String">
+		delete from indolence_date where
+		emp_id=#{string}
+	</delete>
+	
+	<select id="getIndolInfo" parameterType="String" resultType="IndolenceInfoVO">
+		select *
+		from indolence_info where emp_id = #{emp_id}
+	</select>
+	
+	<update id="indolUpdate" parameterType="IndolenceInfoVO">
+		update indolence_info set
+		lateness=#{lateness}, vacation=#{vacation}, half_annual=#{half_annual},
+		absence=#{absence}, annual=#{annual}
+		where emp_id=#{emp_id}
+	</update>
+	
+	<select id="getIndolRequestList" resultType="IndolRequestViewVO" parameterType="SearchCriteriaHR">
+		<![CDATA[ 
+			select * from indol_request_view
+		]]>
+		<include refid="search"></include>
+		<![CDATA[    
+	 		 order by indol_request_id	  
+		]]>
+	</select>
+
+<select id="getIndolRequestCount" resultType="int" parameterType="SearchCriteriaHR">
+<![CDATA[  
+	  select count(*) 
+	  from indol_request_view 
+	]]>
+	<include refid="search"></include>
+</select>	
+
+<select id="getIndolRequest" resultType="IndolRequestVO" parameterType="String">
+	select * from indol_request where indol_request_id = #{string}
+</select>
+
+<update id="indolApprove" parameterType="String">
+		update indol_request set approve='Y' where indol_request_id=#{string}
+</update>
+
+<update id="updateHaVacation" parameterType="String">
+		update indolence_info set vacation=vacation-0.5, half_annual=half_annual+1 where emp_id=#{emp_id}
+</update>
+
+<update id="updateAVacation" parameterType="String">
+		update indolence_info set vacation=vacation-1, annual=annual+1 where emp_id=#{emp_id}
+</update>
+
+<select id="CalVacation" resultType="String">
+	select to_char(end_nowork_date, 'YYYYMMDD')-to_char(start_nowork_date, 'YYYYMMDD') from indol_request where indol_request_id = #{string}
+</select>
+
+<update id="updateVVacation">
+		update indolence_info set vacation=vacation-#{vacation} where emp_id=#{emp_id}
+</update>
+
+<select id="getVacation" resultType="int" parameterType="String">
+	select vacation from indolence_info where emp_id=#{emp_id}
+</select>
+
+<select id="empFull" resultType="EmployeeViewVO">
+	select * from emp_view
+</select>
+
+<insert id="sendIndolMessage">
+	insert into message(message_id, send_id, receive_id, title, contents, receive_check)
+			values(message_seq.NEXTVAL, #{send_id}, 
+			#{receive_id}, '인사부입니다.', '요청이승인되었습니다.', 'N')
+</insert>
+
+<update id="autorityDept">
+	update employee set authorities=#{authorities} where dept_id=#{dept_id}
+</update>
+
+<update id="autorityEmp">
+	update employee set authorities=#{authorities} where emp_id=#{emp_id}
+</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+

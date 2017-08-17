@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.gw.mapper.deptBoardMapper">
+
+  <select id="listAll" resultType="DeptBoardVO">
+    <![CDATA[
+    select
+		dept_board_id, emp_id, dept_board_title, dept_board_content, dept_board_date, dept_board_hit, dept_board_file, dept_id    from 
+      dept_board 
+    where dept_board_id > 0 
+    order by dept_board_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="DeptBoardVO">
+    <![CDATA[
+    select 
+     dept_board_id, emp_id, dept_board_title, dept_board_content, dept_board_date, dept_board_hit, dept_board_file, dept_id
+    from 
+      dept_board 
+    where dept_board_id > 0 
+    order by dept_board_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="DeptBoardVO">
+    <![CDATA[
+     select 
+      dept_board_id, emp_id, dept_board_title, dept_board_content, dept_board_date, dept_board_hit, dept_board_file, dept_id
+    from 
+      dept_board 
+    where dept_board_id > 0 
+    order by dept_board_id desc
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(dept_board_id) 
+    from 
+      dept_board 
+    where 
+      dept_board_id > 0 
+    ]]>
+    </select>
+
+   <select id="listSearch" resultType="DeptBoardVO" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from dept_board 
+	     where dept_board_id > 0
+	     and dept_id = #{dept_id}
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by dept_board_id desc     
+	   ]]>  
+	   
+   </select>
+
+   <select id="calSearch" resultType="DeptScheduleVO" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from dept_schedule 
+	     where dept_schedule_id > 0
+	     and dept_id = #{dept_id}
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by dept_schedule_id desc     
+	   ]]>  
+	   
+   </select>
+   
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="String">
+     select count(dept_board_id) 
+     from dept_board 
+     where dept_board_id > 0
+     and dept_id=#{dept_id}
+   </select>
+
+   <select id="calSearchCount" resultType="int" parameterType="String">
+     select count(dept_schedule_id) 
+     from dept_schedule 
+     where dept_schedule_id > 0
+     and dept_id=#{dept_id}
+   </select>
+<!--    <select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(dept_board_id) 
+     from dept_board 
+     where dept_board_id > 0 
+   ]]>
+     <include refid="search"></include>
+   </select> -->
+   
+   <select id="enameGet" resultType="String" parameterType="String">
+    <![CDATA[  
+   	select e_name from employee where emp_id=#{emp_id}
+   	   ]]>
+   </select>
+   
+   <select id="read" resultType="DeptBoardVO">
+      select
+	  *
+      from
+      dept_board
+      where dept_board_id = #{dept_board_id}
+   </select>
+
+   <select id="readSch" resultType="DeptScheduleVO">
+      select
+	  *
+      from
+      dept_schedule
+      where dept_schedule_id = #{sch_id}
+   </select>
+   
+   <insert id="writeDept">
+    insert into dept_board(dept_board_id, emp_id, dept_board_title, dept_board_content, dept_board_date, dept_board_hit, dept_board_file, dept_id)
+	values(dept_board_seq.NEXTVAL, #{emp_id}, #{ dept_board_title}, #{ dept_board_content}, SYSDATE, 0, 0, #{dept_id })
+   </insert>
+
+   <insert id="writeDeptSch">
+    insert into dept_schedule(dept_schedule_id, emp_id, schedule_name, start_schedule_date, end_schedule_date, schedule_content, dept_id)
+	values(dept_schedule_seq.NEXTVAL, #{emp_id}, #{ schedule_name}, #{ start_schedule_date}, #{ end_schedule_date}, #{ schedule_content}, #{dept_id })
+   </insert>
+
+   <update id="updateDept">
+   		update dept_board set dept_board_title=#{dept_board_title}, dept_board_content=#{dept_board_content} where dept_board_id=#{dept_board_id}
+   </update>
+   <update id="updateSch">
+   		update dept_schedule set start_schedule_date=#{start_schedule_date}, end_schedule_date=#{end_schedule_date}, schedule_name=#{schedule_name}, schedule_content=#{schedule_content} where dept_schedule_id=#{dept_schedule_id}
+   </update>
+   
+   <delete id="deleteDept">
+   		delete from dept_board where dept_board_id=#{dept_board_id}
+   </delete>
+
+   <delete id="deleteSch">
+   		delete from dept_schedule where dept_schedule_id=#{dept_schedule_id}
+   </delete>
+   
+   <select id="getEmployee" resultType="EmployeeVO" parameterType="String">
+   	select * from employee where emp_id=#{emp_id}
+   </select>
+   
+   <select id="getList" resultType="DeptScheduleVO">
+   	  	select * 
+	     from dept_schedule
+	     where dept_schedule_id > 0
+	     and dept_id = #{dept_id}
+   </select>
+   
+   
+   <!-- 파일 업로드 -->
+	<insert id="insertFile" parameterType="FolderFileVO">
+		INSERT INTO share_folder (
+			file_id, emp_id, file_type, file_name, file_size, file_date, down_amount, upload_file
+		) values(
+			share_folder_seq.NEXTVAL, #{emp_id}, #{file_type}, #{file_name}, #{file_size}, SYSDATE, 0, #{upload_file}
+		)
+	</insert>
+	
+	<!-- 파일 전체 리스트 가져오기 -->
+	<select id="listFile" resultType="FolderFileVO">
+		SELECT * FROM share_folder
+	</select>
+	
+	<!-- 파일 정보 하나 가져오기 -->
+	<select id="selectFile" resultType="FolderFileVO" parameterType="int">
+		SELECT * FROM share_folder WHERE file_id = #{file_id }
+	</select>
+	
+	<!-- 파일 정보 하나 삭제하기 -->
+	<delete id="deleteFile" parameterType="int">
+		DELETE FROM share_folder WHERE file_id = #{file_id }
+	</delete>
+   
+</mapper>
+
+

@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+.localcenter {
+	text-align: center;
+}
+
+.item_div, .warehouse_div{
+	width: 45%;
+	height: 200px;
+	border: 2px;
+	left: 28%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;	
+	box-shadow: 1px 1px 100px darkgray;
+}
+.warehouse_div{
+	width:50%;
+}
+.title {
+	background-color: darkgray;
+	padding: 1%;
+	text-align: center;
+	font-size: 1.1em;
+}
+tr, th{
+	border: 1px;
+	border-color: black;
+	border-style: solid;
+}
+.tablecenter , th{
+	text-align: center;
+}
+.new {
+ 	position: relative;
+}
+
+.form1{
+	width: 90%;
+	margin-left: 3%;
+	margin-top: 3%;
+	text-align: center;
+}
+.btnn{
+	height:30px;
+	width: 90px;
+}
+.buttongroup{
+	text-align: center;
+}

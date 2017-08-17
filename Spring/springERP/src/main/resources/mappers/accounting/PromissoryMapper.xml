@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.acc.mapper.PromissoryMapper">
+
+	<insert id="promissoryInsert" parameterType="Promissory">
+		insert into
+		note_ledger (
+		typelist, dept_id, proj_id, customer_id,
+		note_id, ex_date,
+		sums, red_date, remarks
+		) values(
+		#{typelist}, #{dept_id},
+		#{proj_id},
+		#{customer_id}, #{note_id}, #{ex_date},
+		#{sums},
+		#{red_date}, #{remarks}
+		)
+	</insert>
+
+	<select id="promissoryList" resultType="Promissory">
+		SELECT * FROM
+		NOTE_LEDGER
+	</select>
+
+	<update id="promissoryUpdate">
+		UPDATE note_ledger SET state =
+		'지급', remarks =
+		#{remarks}
+		WHERE note_id = #{note_id}
+	</update>
+
+	<update id="promissorygiveUpdate">
+		UPDATE note_ledger SET state = '지급', sums = #{sums},
+		remarks = #{remarks}
+		WHERE note_id = #{note_id}
+	</update>
+
+</mapper>

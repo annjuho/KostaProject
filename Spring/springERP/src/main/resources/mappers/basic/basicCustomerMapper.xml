@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.basic.mapper.basicCustomerMapper">
+
+	<insert id="insertCustomer">
+		insert into customer(
+			customer_id, customer_name, repre_name, phone_number, customer_address, copy_bankbook,
+			bankbook_check, customer_email, customer_fax, checkman
+		)
+		values(
+			#{customer_id}, #{customer_name}, #{repre_name}, #{phone_number},
+			#{customer_address}, #{copy_bankbook}, #{bankbook_check}, #{customer_email},
+			#{customer_fax}, #{checkman}
+		)
+	</insert>
+	<select id="customerList" resultType="Customer">
+		select * from customer
+			order by customer_name
+	</select>
+	<update id="customerUpdapte">
+		update customer set customer_name = #{customer_name}, repre_name = #{repre_name},
+						phone_number = #{phone_number}, customer_address = #{customer_address},
+						copy_bankbook = #{copy_bankbook}, bankbook_check = #{bankbook_check},
+						customer_email = #{customer_email}, customer_fax = #{customer_fax},
+						checkman = #{checkman}
+						where customer_id = #{customer_id}
+	</update>
+	<delete id="customerDelete">
+		delete from customer 
+			where customer_id = #{customer_id}
+	</delete>
+	<select id="getCustomer" resultType="Customer">
+		select * from customer
+			where customer_id = #{customer_id}
+	</select>
+	<select id="listAll" resultType="Customer">
+    <![CDATA[
+    select 
+     customer_id, customer_name, repre_name, phone_number, customer_address, copy_bankbook,
+			bankbook_check, customer_email, customer_fax, checkman
+    from 
+      customer
+    order by customer_id desc
+    ]]>
+   </select>
+   
+   <select id="listPage" resultType="Customer">
+    <![CDATA[
+    select 
+     customer_id, customer_name, repre_name, phone_number, customer_address, copy_bankbook,
+			bankbook_check, customer_email, customer_fax, checkman
+    from 
+      customer
+    order by customer_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="Customer">
+    <![CDATA[
+     select 
+     customer_id, customer_name, repre_name, phone_number, customer_address, copy_bankbook,
+			bankbook_check, customer_email, customer_fax, checkman
+    from 
+      customer
+    order by customer_id desc
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(customer_id) 
+    from 
+      customer
+    ]]>
+    </select>
+</mapper>

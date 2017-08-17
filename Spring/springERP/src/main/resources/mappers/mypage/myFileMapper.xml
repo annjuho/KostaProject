@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springERP.mypage.mapper.myFileMapper">
+
+	<!-- 파일 업로드 -->
+	<insert id="insertFile" parameterType="FolderFileVO">
+		INSERT INTO my_folder (
+			file_id, emp_id, file_type, file_name, file_size, file_date, down_amount, upload_file
+		) values(
+			my_file_seq.NEXTVAL, #{emp_id}, #{file_type}, #{file_name}, #{file_size}, SYSDATE, 0, #{upload_file}
+		)
+	</insert>
+	
+	<!-- 파일 전체 리스트 가져오기 -->
+	<select id="listFile" resultType="FolderFileVO">
+		SELECT * FROM my_folder
+	</select>
+	
+	<!-- 파일 정보 하나 가져오기 -->
+	<select id="selectFile" resultType="FolderFileVO" parameterType="int">
+		SELECT * FROM my_folder WHERE file_id = #{file_id }
+	</select>
+	
+	<!-- 파일 정보 하나 삭제하기 -->
+	<delete id="deleteFile" parameterType="int">
+		DELETE FROM my_folder WHERE file_id = #{file_id }
+	</delete>
+	
+	<!-- emp_id 로 이름얻기 -->
+	<select id="getEname" resultType="String" parameterType="String">
+		SELECT e_name FROM employee WHERE emp_id = #{emp_id }
+	</select>
+	
+</mapper>

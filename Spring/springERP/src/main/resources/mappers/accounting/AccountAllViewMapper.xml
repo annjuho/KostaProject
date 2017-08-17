@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.acc.mapper.AccountAllViewMapper">
+	<!-- 손익계산서 상품매출 -->
+	<select id="incomeAllsalesView" resultType="AccountAllView">
+		SELECT SUM(alls.total)AS total FROM
+		(select sums as total, c.customer_name,
+		cash.remarks
+		FROM cash_trade cash, customer c
+		WHERE cash.customer_id =
+		c.customer_id
+		AND typelist ='매출'
+		union all
+		SELECT sums AS total,
+		c.customer_name, note.remarks
+		FROM note_ledger note, customer c
+		WHERE
+		note.customer_id = c.customer_id
+		AND state = '지급'
+		AND typelist ='받는어음')alls
+	</select>
+	<!-- 직원급여 -->
+	<select id="incomeAllEmpSalView" resultType="AccountAllView">
+		SELECT
+		SUM(maxsal.sal)AS sal
+		FROM
+		(SELECT RPAD(TRUNC(E_SAL/12),7, '0')AS sal
+		FROM EMPLOYEE)maxsal
+	</select>	
+	
+	
+	<!-- 직원 복리후생 총 비용 -->
+	<select id="incommAllEmpFringeView" resultType="AccountAllView">
+		SELECT (COUNT(emp_id)*50000)AS empcount FROM employee
+	</select>	
+	<!-- 영업부서 여비교통비 -->
+	<select id="incommAllEmpTransportationView" resultType="AccountAllView">
+		SELECT (COUNT(emp_id)*100000)AS transportation FROM employee WHERE dept_id='dept_id_01'
+	</select>	
+	<!-- 직원 통신비용-->
+	<select id="incommAllEmpPostageView" resultType="AccountAllView">
+		SELECT (COUNT(emp_id)*80000)AS postage FROM employee
+	</select>	
+	<!-- 부서별 소모품 비용-->
+	<select id="incommAllEmpSuppliesView" resultType="AccountAllView">
+		SELECT (COUNT(dept_id)*65000)AS supplies FROM employee
+	</select>	
+	<!-- 직원 보험료  -->
+	<select id="incommAllEmpPremiumView" resultType="AccountAllView">
+		SELECT sum(premium.sal*0.1)as premium FROM(
+		SELECT RPAD(TRUNC(E_SAL/12),7, '0')AS sal FROM EMPLOYEE)premium
+	</select>
+	<!-- 상품원가 -->
+	<select id="incomeProductCostPurchaseAllView" resultType="AccountAllView">
+	SELECT SUM(total)as costtotal FROM
+	(SELECT (p.price_in * b.buy_amount)AS total FROM buy b, product p WHERE b.product_id = p.product_id)
+	</select>
+	
+	
+	
+
+</mapper>

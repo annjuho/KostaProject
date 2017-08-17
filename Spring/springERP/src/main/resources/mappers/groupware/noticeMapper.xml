@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.gw.mapper.noticeMapper">
+
+  <select id="listAll" resultType="NoticeVO">
+    <![CDATA[
+    select
+    	notice_id, emp_id, notice_title, notice_content, notice_date, notice_hit
+    from 
+      notice 
+    where notice_id > 0 
+    order by notice_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="NoticeVO">
+    <![CDATA[
+    select 
+     notice_id, emp_id, notice_title, notice_content, notice_date, notice_hit
+    from 
+      notice 
+    where notice_id > 0 
+    order by notice_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="NoticeVO">
+    <![CDATA[
+     select 
+      notice_id, emp_id, notice_title, notice_content, notice_date, notice_hit
+    from 
+      notice 
+    where notice_id > 0 
+    order by notice_id desc
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(notice_id) 
+    from 
+      notice 
+    where 
+      notice_id > 0 
+    ]]>
+    </select>
+
+   <select id="listSearch" resultType="NoticeVO" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from notice 
+	     where notice_id > 0   
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by notice_id desc     
+	   ]]>  
+	   
+   </select>
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(notice_id) 
+     from notice 
+     where notice_id > 0 
+   ]]>
+     <include refid="search"></include>
+   </select>
+   
+   <select id="enameGet" resultType="String" parameterType="String">
+    <![CDATA[  
+   	select e_name from employee where emp_id=#{emp_id}
+   	   ]]>
+   </select>
+   
+   <select id="read" resultType="NoticeVO">
+      select
+	  *
+      from
+      notice
+      where notice_id = #{notice_id}
+   </select>
+   
+   <insert id="writeNotice">
+    insert into notice(notice_id, emp_id, notice_title, notice_content, notice_date, notice_hit)
+	values(notice_seq.NEXTVAL, #{emp_id}, #{ notice_title}, #{ notice_content}, SYSDATE, #{notice_hit })
+   </insert>
+
+   <update id="updateNotice">
+   		update notice set notice_title=#{notice_title}, notice_content=#{notice_content} where notice_id=#{notice_id}
+   </update>
+   
+   <delete id="deleteNotice">
+   		delete from notice where notice_id=#{notice_id}
+   </delete>
+   
+   <insert id="reInsert">
+   		insert into notice_reply(nreply_id, emp_id, nreply_content, nreply_date, nreply_ref, nreply_step, nreply_level, notice_id)
+		values(nreply_seq.nextval, #{emp_id}, #{nreply_content}, sysdate, 0, 0, 0, #{notice_id})
+	</insert>
+   
+   <select id="reList" resultType="NoticeReplyVO">
+   		select * from notice_reply where notice_id=#{notice_id} order by nreply_id
+   </select>
+   
+   <delete id="reDelete">
+   		delete from notice_reply where nreply_id=#{re_id}
+   </delete>
+</mapper>
+
+

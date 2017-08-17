@@ -1,0 +1,180 @@
+@CHARSET "UTF-8";
+
+.contentsName {
+	border-bottom: 1px solid #ccc;
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 15px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	margin: 0;
+}
+
+.mainContents{
+	left:  100px;
+	top: 150px;
+}
+
+
+.contentsName #title {
+	color: #000;
+	display: inline-block;
+	font-family: FontAwesome;
+	font-size: 13px;
+	font-weight: bold;
+	margin-right: 3px;
+	text-decoration: none;
+}
+
+/*카드리스트*/
+#cardList {
+	font-weight: bold;
+	text-align: center;
+	font-size: 15px;
+	font-family: FontAwesome;
+	color: #000;
+	text-decoration: none;
+}
+
+#cardInfos {
+	text-align: center;
+}
+
+.mainTable {
+	text-align: center;
+}
+
+type =[button] {
+	right: 80%;
+}
+
+#Card {
+	text-align: center;
+}
+
+.table {
+	margin: 0;
+	padding: 0;
+}
+/*신규카드등록창 패널부분*/
+
+/*작은 팝업 패널 색깔*/
+.miniTitle-panel {
+	background-color: white;
+	border: 2px solid gray;
+	box-shadow: 1px 1px 100px darkgray;
+	height: 1000px;
+	left: 28%;
+	position: absolute;
+	top: 7%;
+	width: 50%;
+	z-index: 100;
+	display: none;
+}
+
+/*신규카드등록창*/
+.wrapper-title {
+	color: #000;
+	font-family: FontAwesome;
+	font-size: 13px;
+	font-weight: normal;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.close {
+	position: relative;
+}
+
+/*작은상단패널 설정*/
+.miniMenuTitle {
+	border-collapse: collapse;
+	content: "";
+	cursor: move;
+	background-color: #222;
+	color: #9d9d9d;
+	position: relative;
+	clear: both;
+	box-sizing: content-box;
+	width: 100%;
+	height: 30px;
+}
+
+/*작은 타이틀 제목*/
+.title-name {
+	float: left;
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-bottom: 3px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+}
+
+.header.header-fixed {
+	top: 0;
+	width: inherit;
+	z-index: 100;
+	position: absolute !important;
+}
+
+.header-fixed {
+	background-color: #f5f5f5;
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	clear: both;
+	width: 100px;
+}
+
+/*작은 타이틀 x버튼*/
+#closeBtn {
+	height: 20px;
+	margin: -10px 0 0;
+	padding: 1px;
+	position: absolute;
+	right: 0.3em;
+	top: 50%;
+	width: 20px;
+}
+
+
+
+/*footer그룹*/
+#footer-Group {
+	background-color: #f5f5f5;
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	border-top: 1px solid #bbb;
+	width: 100%;
+	position: relative;
+}
+/*버튼 그룹*/
+#button-Group {
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+.row-CardTYPE {
+	text-align: left;
+}
+
+/*##공통사항##*/
+/*라디오 체크박스 부분*/
+.radio-inline input[type="radio"], .checkbox-inline input[type="checkbox"]
+	{
+	margin: 0 3px;
+	position: relative;
+	vertical-align: middle;
+}
+
+i {
+	left: 5px;
+	margin-right: 10px;
+}
+
+th{
+	text-align: center;
+	vertical-align: middle;
+}

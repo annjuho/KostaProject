@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.acc.mapper.SearchMapper">
+
+
+<select id="diagnosisList" resultType="Diagnosiss">
+	SELECT *FROM diagnosis
+</select>
+
+<select id="diagnosisNumberSearch" resultType="Diagnosiss">
+	SELECT *FROM diagnosis
+	WHERE diagnosis_number = #{diagnosis_number}
+</select>
+
+<select id="searchEmp_idList" resultType="EmployeeViewVO">
+	SELECT *FROM employee
+	WHERE emp_id = #{emp_id}
+</select>
+
+<select id="EmpList" resultType="EmployeeViewVO">
+	SELECT *FROM employee	
+</select>
+
+<select id="accountList" resultType="Accounts">
+	SELECT *FROM accounts
+	
+</select>
+<select id="accountListId" resultType="Accounts">
+	SELECT *FROM accounts
+	WHERE account_id = #{account_id}
+</select>
+
+
+<select id="listDept" resultType="HrDeptVO">
+	SELECT *FROM department	
+</select>
+
+<select id="projectList" resultType="ProjectsVO">
+	SELECT *FROM projects
+</select>
+
+<select id="projectProj_idList" resultType="ProjectsVO">
+	SELECT *FROM projects
+	WHERE proj_id = #{proj_id}
+</select>
+
+<select id="customerList" resultType="Customer">
+	SELECT *FROM customer
+</select>
+
+<select id="customerIdList" resultType="Customer">
+	SELECT *FROM customer
+	WHERE customer_id = #{customer_id}
+</select>
+
+<select id="promissoryList" resultType="Promissory">
+	SELECT *FROM note_ledger
+	WHERE typelist = '받는어음' AND state = '미지급'
+</select>
+
+<select id="promissoryPaymentIdList" resultType="Promissory">
+	SELECT *FROM note_ledger
+	WHERE note_id = #{note_id}
+</select>
+
+<select id="promissoryPaymentList" resultType="Promissory">
+	SELECT *FROM note_ledger
+	WHERE typelist = '지급어음' AND state = '미지급'
+</select>
+
+
+
+
+
+<select id="promissoryNoteAllSearch" parameterType="NoteAllSearchDateSet" resultType="Promissory">
+	SELECT * FROM note_ledger	
+	<if test="start_date != '' and start_date != null">					
+		WHERE red_date BETWEEN #{start_date} AND #{end_date}
+	</if>
+	<if test="dept_id != '' and dept_id != null">
+		and dept_id = #{dept_id}
+	</if>
+	<if test="project_number != '' and project_number != null">
+		and project_number = #{project_number}
+	</if>
+	<if test="typelist != '' and typelist != null">
+		and typelist = #{typelist}
+	</if>	
+	<if test="card_number != '' and card_number != null">
+		and card_number = #{card_number}
+	</if>	
+</select>
+
+</mapper>

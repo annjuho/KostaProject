@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springERP.mypage.mapper.myInfoMapper">
+
+	<!-- 로그인한사람 정보 employee 테이블에서 가져오기  - 보람 -->
+	<select id="selectEmpInfo" resultType="EmployeeVO">
+		SELECT * FROM employee WHERE emp_id = #{emp_id}
+	</select>
+	
+	<!-- employee 테이블 개인정보 수정하기 -->
+	<update id="editEmpInfo" parameterType="EmployeeVO">
+		UPDATE employee	SET
+				e_age = #{e_age},
+				phone_number = #{phone_number},
+				e_email = #{e_email},
+				e_address = #{e_address},
+				e_pwd = #{e_pwd}
+			WHERE emp_id = #{emp_id}
+	</update>
+	
+	<!-- 휴가신청 -->
+	<insert id="insertIndolRequest" parameterType="IndolRequestVO">
+		INSERT INTO indol_request(
+			indol_request_id, emp_id, start_nowork_date, request_type, request_date, end_nowork_date
+		) values(
+			indol_request_seq.NEXTVAL, #{emp_id}, #{start_nowork_date}, #{request_type}, SYSDATE, #{end_nowork_date}
+		)
+	</insert>
+</mapper>

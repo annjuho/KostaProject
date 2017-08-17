@@ -1,0 +1,94 @@
+@CHARSET "UTF-8";
+.accounting_print_table{
+	height: 30px;
+	margin-top: 30px;
+}
+.print_check_head td:first-child{
+	padding-top: 20px;
+}
+#print_btn_group{
+	margin-top: 30px;
+}
+#check_area{
+	height: 80px;
+	width: 210px;
+	margin-top: 20px;
+	margin-left: 8%;
+}
+#check_area td{
+	border-width: 1px;
+	border-color: black;
+	font-weight: bolder;
+}
+
+#check_area td{
+	height: 20px;
+	width: 30px;
+	text-align: center;
+}
+.print_head td{
+	font-size: 20px;
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
+#income_state_table{
+	width: 750px;
+}
+.print_type_td{
+	background-color: #BDBDBD;
+}
+.print_type_td, .fi_print_td_total{
+	background-color: #BDBDBD;
+}
+.print_th{
+	background-color: #BDBDBD;
+}
+.print_th th{
+	text-align: center;
+}
+.print_td td:nth-child(1){
+	text-indent: 12px;
+}
+#type_area{
+	width: 120px;
+}
+.print_type_td td{
+	font-weight: bold;
+}
+
+.topName{
+	font-weight: bolder;
+}
+.print_type_td td:nth-child(2), .print_type_td td:nth-child(3), 
+.print_type_td td:nth-child(4), .print_type_td td:nth-child(5),
+.print_td td:nth-child(2), .print_td td:nth-child(3), .print_td td:nth-child(4), .print_td td:nth-child(5),
+.fi_print_td_lv1 td:nth-child(2), .fi_print_td_lv1 td:nth-child(3), .fi_print_td_lv1 td:nth-child(4), .fi_print_td_lv1 td:nth-child(5), 
+.fi_print_td_lv2 td:nth-child(2), .fi_print_td_lv2 td:nth-child(3), .fi_print_td_lv2 td:nth-child(4), .fi_print_td_lv2 td:nth-child(5), 
+.fi_print_td_lv3 td:nth-child(2), .fi_print_td_lv3 td:nth-child(3), .fi_print_td_lv3 td:nth-child(4), .fi_print_td_lv3 td:nth-child(5), 
+.fi_print_td_total td:nth-child(2), .fi_print_td_total td:nth-child(3), .fi_print_td_total td:nth-child(4), .fi_print_td_total td:nth-child(5){
+	text-align: right;
+}
+
+#income_state_table{
+	border-width: 2px;
+	border-color: 
+}
+.accounting_print_table{
+	margin-left: 2%;
+}
+.accounting_print_table td, .fi_print_td_total td:nth-child(1){
+	text-align: center;
+}
+.fi_print_type_td td, .fi_print_td_lv1 td , .fi_print_td_lv2 td, .fi_print_td_total td{
+	font-weight: bold;
+}
+.fi_print_td_lv1 td:nth-child(1){
+	text-indent: 12px;
+}
+.fi_print_td_lv2 td:nth-child(1){
+	text-indent: 24px;
+}
+.fi_print_td_lv3 td:nth-child(1){
+	text-indent: 36px;
+}

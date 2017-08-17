@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.odm.mapper.odmMapper">
+
+	<select id="clientMax" resultType="int">
+		SELECT COUNT(*) FROM clients
+	</select>
+	<insert id="clientInsert" parameterType="OrderList">
+		INSERT INTO clients(
+			client_id,
+			client_name,
+			client_phonenumber,
+			client_address
+		) VALUES(
+			#{client_id},
+			#{client_name},
+			#{client_phonenumber},
+			#{client_address}
+		)
+	</insert>
+	<select id="orderMax" resultType="int">
+		SELECT COUNT(*) FROM orderlist
+	</select>
+	<insert id="orderInsert" parameterType="OrderList">
+		INSERT INTO orderlist(
+			order_id,
+			client_id,
+			order_date,
+			settlement_price
+		) VALUES (
+			#{order_id},
+			#{client_id},
+			#{order_date},
+			#{settlement_price}
+		)
+	</insert>
+	<select id="orderDetailMax" resultType="int">
+		SELECT COUNT(*) FROM order_detail
+	</select>
+	<insert id="orderDetailInsert" parameterType="OrderList">
+		INSERT INTO order_detail(
+			order_detail_id,
+			product_id,
+			order_amount,
+			order_id
+		) VALUES(
+			#{order_detail_id},
+			#{product_id},
+			#{order_amount},
+			#{order_id}
+		)
+	</insert>
+	<select id="deliverySelect" parameterType="String" resultType="DeliveryList">
+		SELECT o.order_id, c.client_name, c.client_address FROM orderlist o, clients c
+			WHERE o.client_id = c.client_id
+			AND order_id = #{order_id}
+	</select>
+	
+	<select id="deliveryMax" resultType="int">
+		SELECT COUNT(*) FROM delivery
+	</select>
+	<insert id="deliveryInsert" parameterType="DeliveryList">
+		INSERT INTO delivery(
+			delivery_id,
+			order_id,
+			addressee,
+			addressee_address,
+			delivery_state
+		) VALUES(
+			#{delivery_id},
+			#{order_id},
+			#{addressee},
+			#{addressee_address},
+			#{delivery_state}
+		)
+	</insert>
+	
+	<select id="deliveryList" resultType="deliveryList">
+		SELECT * FROM delivery ORDER BY delivery_id DESC
+	</select>
+	
+	<select id="selectOrder" parameterType="String" resultType="orderList">
+		SELECT DISTINCT o.order_id, od.order_amount, od.product_id FROM orderlist o, order_detail od
+			WHERE o.order_id = od.order_id
+			AND o.order_id = #{order_id}
+	</select>
+	
+	<update id="sellUpdate" parameterType="orderList">
+		UPDATE sell set sell_amount = sell_amount - #{order_amount}
+			WHERE product_id = #{product_id}
+	</update>
+	
+	<update id="stockUpdate" parameterType="orderList">
+		UPDATE sell SET sell_amount = sell_amount - #{order_amount}
+			WHERE product_id = #{product_id}
+	</update>
+</mapper>

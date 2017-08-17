@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.stock.mapper.stockRPMapper">
+
+	<insert id="stockRPInsert" parameterType="StockRP">
+			INSERT INTO stock_inoutlist(
+				inout_id,
+				inout_amount,
+				inout_date,
+				product_id,
+				emp_id,
+				inout_type,
+				customer_id
+			) VALUES(
+				#{inout_id}, 
+				#{inout_amount},
+				#{inout_date},
+				#{product_id},
+				#{emp_id},
+				#{inout_type},
+				#{customer_id}
+			)
+	</insert>
+	
+	<select id="productList" resultType="Product">
+		SELECT * FROM product
+	</select>
+	
+	<select id="inoutMax" resultType="int">
+		SELECT COUNT(*) FROM stock_inoutlist
+	</select>
+	
+	<update id="stockUpdate" parameterType="StockRP">
+		UPDATE stock SET stock_amount = <if test="inout_type == 'in'">stock_amount + #{inout_amount}</if>
+															<if test="inout_type == 'out'">stock_amount - #{inout_amount}</if>
+							WHERE product_id = #{product_id}
+	</update>
+	<select id="stockCalendarJson" resultType="StockCalendar">
+	    SELECT rp.inout_id, p.product_id, p.product_name, s.stock_amount, w.warehouse_id, w.warehouse_name, rp.inout_amount, 
+	    			rp.inout_date, rp.inout_type, e.e_name
+ 		FROM product p, stock s, warehouse w, stock_inoutlist rp, employee e
+ 		WHERE rp.product_id = p.product_id AND
+					p.product_id = s.product_id AND
+					s.warehouse_id = w.warehouse_id AND
+					rp.emp_id = e.emp_id
+	</select>
+	
+	<update id="stockRPUpdate" parameterType="StockRP">
+		UPDATE stock_inoutlist SET inout_date = #{inout_date}
+			WHERE inout_id = #{inout_id} 
+	</update>
+
+	<select id="stockRPSearchList" resultType="StockRPSearch" parameterType="StockRPSearch">
+		SELECT c.customer_name, p.product_name, io.inout_date, io.inout_amount, io.inout_type, s.stock_amount 
+				FROM customer c, product p, stock_inoutlist io, stock s
+				WHERE c.customer_id = io.customer_id
+				AND io.product_id = p.product_id
+				AND s.product_id = io.product_id
+				AND inout_date BETWEEN #{start_date} and #{end_date}
+				ORDER BY io.inout_date
+	</select>
+	
+	<select id="stockList" resultType="StockList">
+		SELECT p.product_id, p.product_name, s.stock_amount, w.warehouse_name, w.warehouse_loc
+			FROM product p, stock s, warehouse w
+			WHERE p.product_id = s.product_id
+			AND s.warehouse_id = w.warehouse_id
+	</select>
+	
+	<select id="mainStock" resultType="MainStockList">
+		SELECT p.product_name, s.stock_amount, s.stock_amount, i.inout_type, i.inout_amount, i.inout_date
+			FROM product p, stock s, stock_inoutlist i
+			WHERE p.product_id = s.product_id
+			AND s.product_id = i.product_id
+	</select>
+	
+	
+</mapper>

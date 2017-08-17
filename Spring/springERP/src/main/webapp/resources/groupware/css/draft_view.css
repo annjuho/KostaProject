@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+#write_content
+{
+	font-size: 13px;
+	line-height: 1.6;
+	text-align:center;
+
+	/* Fix for missing scrollbars with RTL texts# (#10488) */
+	word-wrap: break-word;
+}
+
+#write_content table {
+	border-collapse:collapse;
+	width:85%;
+	margin:0 auto;
+	text-align:center;
+}
+
+#write_content table th{
+	background:#f0f0f0;
+	text-align:center;
+}
+
+#write_content table tr{
+	height:60px;
+}
+
+#height-lg {
+	height:500px;
+}
+
+#height-sm {
+	height:100px;
+}

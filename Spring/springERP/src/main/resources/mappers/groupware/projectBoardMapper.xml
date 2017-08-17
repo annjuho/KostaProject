@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="erp.gw.mapper.pBoardMapper">
+
+  <select id="listAll" resultType="ProjectsVO">
+    <![CDATA[
+    select 
+      proj_id, proj_name, proj_content, proj_period, proj_start_date, proj_end_date, emp_id
+    from 
+      projects 
+    where proj_id > 0 
+    order by proj_id desc
+    ]]>
+   </select>
+   
+  
+   <select id="listPage" resultType="ProjectsVO">
+    <![CDATA[
+    select 
+      proj_id, proj_name, proj_content, proj_period, proj_start_date, proj_end_date, emp_id
+    from 
+      projects 
+    where proj_id > 0 
+    order by proj_id desc
+    ]]>
+   </select>
+
+   <select id="listCriteria" resultType="ProjectsVO">
+    <![CDATA[
+     select 
+      proj_id, proj_name, proj_content, proj_period, proj_start_date, proj_end_date, emp_id
+    from 
+      projects 
+    where proj_id > 0 
+    order by proj_id desc
+    ]]>
+   </select>
+
+   <select id="countPaging" resultType="int">
+    <![CDATA[
+    select 
+      count(proj_id) 
+    from 
+      projects 
+    where 
+      proj_id > 0 
+    ]]>
+    </select>
+
+   <select id="listSearch" resultType="ProjectsVO" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from projects 
+	     where proj_id > 0
+	     and emp_id = #{emp_id}
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by proj_id desc     
+	   ]]>  
+	   
+   </select>
+   
+   <select id="allSearchCriteria" resultType="ProjectsVO" parameterType="SearchCriteria" >
+   
+	   <![CDATA[  
+	     select * 
+	     from projects 
+	     where proj_id > 0
+	   ]]>  
+	   
+	     <include refid="search"></include>
+	     
+	   <![CDATA[    
+	     order by proj_id desc     
+	   ]]>  
+	   
+   </select>
+   
+     <sql id="search">
+    <if test="searchType != null" >
+      <if test="searchType == 't'.toString()">
+        and title like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'c'.toString()">
+        and content like '%'|| #{keyword}||'%'
+      </if>
+      <if test="searchType == 'w'.toString()">
+        and writer like '%'|| #{keyword}||'%'
+      </if>    
+      <if test="searchType == 'tc'.toString()">
+        and ( title like '%'|| #{keyword}||'%' OR content like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'cw'.toString()">
+        and ( content like '%'|| #{keyword}||'%' OR writer like '%'|| #{keyword}||'%')
+      </if>       
+      <if test="searchType == 'tcw'.toString()">
+        and (   title like '%'|| #{keyword}||'%'
+              OR
+                content like '%'|| #{keyword}||'%'
+              OR
+                writer like '%'|| #{keyword}||'%')
+      </if>             
+    </if> 
+   </sql>
+   
+   <select id="listSearchCount" resultType="int" parameterType="String">
+     select count(proj_id) 
+     from projects 
+     where proj_id > 0
+     and emp_id=#{emp_id}
+   </select>
+
+  <select id="allSearchCount" resultType="int" parameterType="SearchCriteria">
+   <![CDATA[  
+     select count(proj_id) 
+     from projects 
+     where proj_id > 0 
+   ]]>
+     <include refid="search"></include>
+   </select>
+   
+   <select id="enameGet" resultType="String" parameterType="String">
+    <![CDATA[  
+   	select e_name from employee where emp_id=#{emp_id}
+   	   ]]>
+   </select>
+   
+   <select id="read" resultType="ProjectsVO">
+      select
+	  *
+      from
+      projects
+      where proj_id = #{proj_id}
+   </select>
+   
+   <insert id="writeProj">
+    insert into projects(proj_id, proj_name, proj_content, proj_period, proj_start_date, proj_end_date, emp_id)
+	values(projB_seq.NEXTVAL, #{proj_name}, #{ proj_content}, #{ proj_period}, #{ proj_start_date}, #{proj_end_date }, #{emp_id})
+   </insert>
+
+   <insert id="dsvoWrite">
+   insert into dept_schedule(dept_schedule_id, emp_id, schedule_name, start_schedule_date, end_schedule_date, schedule_content, proj_id, dept_id)
+   values(dept_schedule_seq.NEXTVAL, #{emp_id}, #{ schedule_name}, #{ start_schedule_date}, #{ end_schedule_date}, #{schedule_content }, (SELECT MAX(proj_id) FROM projects), #{dept_id})
+   </insert>
+   
+   <update id="updateProj">
+   		update projects set proj_name=#{proj_name}, proj_content=#{proj_content} where proj_id=#{proj_id}
+   </update>
+   
+   <delete id="deleteProj">
+   		delete from projects where proj_id=#{proj_id}
+   </delete>
+   
+   <select id="getAllPro" resultType="ProjectsVO">
+   		select * from projects
+   </select>
+   
+</mapper>
+
+
+
+
+
+
+
+
+

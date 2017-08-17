@@ -1,0 +1,66 @@
+package erp.hr.persistence;
+
+import java.util.List;
+import java.util.Map;
+
+import erp.hr.domain.EmployeeVO;
+import erp.hr.domain.EmployeeViewVO;
+import erp.hr.domain.HrBasicVo;
+import erp.hr.domain.HrDeptVO;
+import erp.hr.domain.HrDutyVO;
+import erp.hr.domain.HrJobVO;
+import erp.hr.domain.HrPositionVO;
+import erp.hr.domain.IndolInfoViewVO;
+import erp.hr.domain.IndolRequestVO;
+import erp.hr.domain.IndolRequestViewVO;
+import erp.hr.domain.IndolenceInfoVO;
+import erp.hr.domain.SearchCriteriaHR;
+
+public interface HrDAO {
+	public int deptChecker(String b_id)throws Exception;
+	public int positionChecker(String b_id)throws Exception;
+	public int jobChecker(String b_id)throws Exception;
+	public int dutyChecker(String b_id)throws Exception;
+	public void deptInsert(HrBasicVo vo);
+	public void positionInsert(HrBasicVo vo);
+	public void jobInsert(HrBasicVo vo);
+	public void dutyInsert(HrBasicVo vo);
+	public void updateDept(HrBasicVo vo);
+	public void updatePosition(HrBasicVo vo);
+	public void updateJob(HrBasicVo vo);
+	public void updateDuty(HrBasicVo vo);
+	public List<HrDeptVO> deptList();
+	public List<HrPositionVO> positionList();
+	public List<HrJobVO> jobList();
+	public List<HrDutyVO> dutyList();
+	public void delDept(String b_id);
+	public void delPosition(String b_id);
+	public void delJob(String b_id);
+	public void delDuty(String b_id);
+	public int empChecker(String b_id);
+	public void insertEmp(EmployeeVO vo);
+	public List<EmployeeViewVO> empListSearch(SearchCriteriaHR cri);
+	public int emlListCount(SearchCriteriaHR cri);
+	public void empDelete(String string);
+	public void updateEmp(EmployeeVO vo);
+	public EmployeeVO getEmp(String emp_id);
+	public void indol_info_del(String string);
+	public void indol_date_del(String string);
+	public List<IndolInfoViewVO> getIndolInfoLIst(SearchCriteriaHR cri);
+	public int indolInfoCount(SearchCriteriaHR cri);
+	public IndolenceInfoVO getIndolInfo(String emp_id);
+	public void indolUpdate(IndolenceInfoVO vo);
+	public List<IndolRequestViewVO> getIndolRequestList(SearchCriteriaHR cri);
+	public int getIndolRequestCount(SearchCriteriaHR cri);
+	public void indolApprove(String string);
+	public IndolRequestVO getIndolRequest(String string);
+	public int getVacation(String emp_id);
+	public void updateHaVacation(String emp_id);
+	public void updateAVacation(String emp_id);
+	public String CalVacation(String string);
+	public void updateVVacation(Map<String, Object> paramMap);
+	public List<EmployeeViewVO> empFull();
+	public void sendIndolMessage(Map<String, String> paramMap);
+	public void autorityDept(Map<String, String> paramMap);
+	public void autorityEmp(Map<String, String> paramMap);
+}

@@ -1,0 +1,48 @@
+.add, .update{
+	width: 50%;
+	height: 500px;
+	border: 2px;
+	left: 28%;
+	top: 7%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;
+	box-shadow: 1px 1px 100px darkgray;
+}
+.title {
+	background-color: darkgray;
+	padding: 1%;
+	text-align: center;
+	font-size: 1.1em;
+}
+.new {
+ 	position: relative;
+}
+.addform, .updateform{
+	width: 90%;
+	margin-left: 3%;
+	margin-top: 3%;
+	text-align: center;
+}
+.btnn{
+	height:30px;
+	width: 90px;
+}
+.center{
+	text-align: center;
+}
+.buttongroup{
+	text-align: center;
+}
+table tr td, table tr th{
+	text-align: center;
+}
+#bcontainer{
+	margin:3%;
+}
+#tablediv{
+	margin: 0 12%;
+}

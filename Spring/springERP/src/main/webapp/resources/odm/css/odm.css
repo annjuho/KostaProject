@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+.success, .failed{
+	width: 40%;
+	height: 120px;
+	border: 2px;
+	left: 38%;
+	top: 23%;
+	border-color: gray;
+	border-style: solid;
+	position: absolute;
+	background-color: white;
+	display: none;
+	z-index: 100;
+	box-shadow: 1px 1px 100px darkgray;
+}
+.title {
+	background-color: darkgray;
+	height: 30px;
+	padding: 1%;
+	text-align: center;
+	font-size: 1.1em;
+}
+
+table tr td, table tr th{
+	text-align: center;
+}
+.localcenter {
+	text-align: center;
+}
+.new {
+ 	position: relative;
+}
+.buttongroup{
+	text-align: center;
+}

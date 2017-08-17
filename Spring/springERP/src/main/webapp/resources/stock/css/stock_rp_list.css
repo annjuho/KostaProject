@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+.datespan{
+	float:right;
+}
+h3{
+	text-align: center;
+}
+.rp_div{
+	margin:30px 0 60px;
+}
+th{
+	text-align: center;
+}
